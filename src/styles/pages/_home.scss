@@ -61,6 +61,38 @@
             padding-bottom: 72px;
             text-align: center;
             color: #000;
+            h3 {
+                font-weight: 700;
+            }
+            &.extras {
+                margin-top: 48px;
+                h4 {
+                    font-weight: 700;
+                    color: #000;
+                }
+                ul {
+                    display: flex;
+                    flex: 1;
+                    flex-flow: row nowrap;
+                    width: 100%;
+                    max-width: 640px;
+                    margin: 36px auto 0 auto;
+                    li {
+                    display: flex;
+                    flex: 1;
+                    align-content: center;
+                    justify-content: center;
+                    }
+                    @media screen and (max-width: 960px) {
+                        flex-flow: column;
+                        li {
+                            flex: 0 1 auto;
+                            width: 100%;
+                            margin-bottom: 18px;
+                        }
+                    }
+                }
+            }
             hr {
                 border: none;
                 height: 1px;

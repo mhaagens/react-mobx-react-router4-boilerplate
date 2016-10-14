@@ -62,6 +62,15 @@ export default class Home extends Component {
 							<p>Webpack takes modules with dependencies and generates static assets representing those modules.</p>
 						</div>
 					</div>
+					<div className="section-header extras">
+						<h4>Extras</h4>
+						<hr/>
+						<ul>
+							<li>✓ Async Component Loading</li>
+							<li>✓ Code-splitting</li>
+							<li>✓ Extracted CSS</li>
+						</ul>
+					</div>
 				</main>
 			</div>
 		)
