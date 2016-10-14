@@ -1,0 +1,28 @@
+.post {
+	min-width: 960px;
+	max-width: 960px;
+	padding: 48px 24px;
+	margin: 0 auto;
+	a {
+		margin: 0 0 72px 0;
+	}
+	h1 {
+		color: #000;
+		margin-bottom: 24px;
+		font-weight: 700;
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	p {
+		&::first-letter {
+			text-transform: uppercase;
+		}	
+	}
+	@media screen and (max-width: 960px) {
+		min-width: 100%;
+		max-width: 100%;
+		padding: 48px 24px;
+	}
+}

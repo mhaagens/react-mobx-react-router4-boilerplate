@@ -1,0 +1,16 @@
+.topbar {
+	display: flex;
+	flex: 0 1 auto;
+	align-items: center;
+	padding: 0 24px;
+	width: 100%;
+	height: 60px;
+	background: $primary;
+    .button {
+        color: rgba(#000, .5);
+        font-weight: 600;
+        &:hover {
+        	color: rgba(#000, 1);
+        }
+    }
+}
