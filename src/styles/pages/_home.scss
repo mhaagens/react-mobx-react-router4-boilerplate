@@ -41,10 +41,10 @@
             font-weight: 400;
         }
         @media screen and (max-width: 960px) {
-        	padding: 24px;
-        	text-align: center;
+            padding: 24px;
+            text-align: center;
             h1 {
-            	font-size: 6vmax;
+                font-size: 6vmax;
             }
         }
     }
@@ -75,13 +75,13 @@
                     flex: 1;
                     flex-flow: row nowrap;
                     width: 100%;
-                    max-width: 640px;
+                    max-width: 720px;
                     margin: 36px auto 0 auto;
                     li {
-                    display: flex;
-                    flex: 1;
-                    align-content: center;
-                    justify-content: center;
+                        display: flex;
+                        flex: 1;
+                        align-content: center;
+                        justify-content: center;
                     }
                     @media screen and (max-width: 960px) {
                         flex-flow: column;
@@ -171,15 +171,32 @@
     justify-content: center;
     align-items: center;
 }
+
 .github-buttons a {
+    display: flex;
+    align-items: center;
     padding: 18px 24px;
     border-radius: 2px;
     border: 1px solid #000;
     color: #000;
     font-weight: 600;
     font-size: 18px;
+    &:before {
+        content: '';
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+        background: url(GitHub-Mark-32px.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
     &:hover {
         background: #000;
         color: #fff;
+        &:before {
+            background: url(GitHub-Mark-Light-32px.png);
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
     }
 }

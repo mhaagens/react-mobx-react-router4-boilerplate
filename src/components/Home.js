@@ -68,7 +68,7 @@ export default class Home extends Component {
 						<ul>
 							<li>✓ Async Component Loading</li>
 							<li>✓ Code-splitting</li>
-							<li>✓ Extracted CSS</li>
+							<li>✓ Extracted and autoprefixed CSS</li>
 						</ul>
 					</div>
 				</main>
