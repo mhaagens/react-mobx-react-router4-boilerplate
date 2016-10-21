@@ -33,7 +33,7 @@ export default class App extends Component {
 						<Match pattern="/posts/:id" component={require('react-router?name=subitem!./Subitem')} />
 						<Match exactly pattern="/login" component={require('react-router?name=login!./Login')} />
 						<Miss component={require('react-router?name=notfound!./NotFound')} />
-						{timeToRefresh && timeToRefresh <= 4 ? this.store.refreshToken() : null}
+						{!!(timeToRefresh && timeToRefresh <= 4) && this.store.refreshToken()}
 					<footer>
 						Cobbled together by <a href="https://twitter.com/mhaagens" target="_blank">@mhaagens</a> | github: <a href="https://github.com/mhaagens" target="_blank">mhaagens</a>
 					</footer>
