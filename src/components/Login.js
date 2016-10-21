@@ -8,7 +8,7 @@ export default class Login extends Component {
 		return (
 			<div className="page login">
 				Your login form here...
-				{this.props.store.authenticated && !this.props.store.authenticating ? <Redirect to="/" /> : null}
+				{(this.props.store.authenticated && !this.props.store.authenticating) && <Redirect to="/" />}
 			</div>
 		)
 	}

@@ -15,10 +15,12 @@ export default class Subitem extends Component {
 		return (
 			<div className="page post">
 				<Link to="/posts">&larr; Back to Posts</Link>
-				{this.store.item ? <article>
-					<h1>{this.store.item.title}</h1>
-					<p>{this.store.item.body}</p>
-				</article> : null}
+				{!!this.store.item && (
+					<article>
+						<h1>{this.store.item.title}</h1>
+						<p>{this.store.item.body}</p>
+					</article>
+				)}
 
 			</div>
 		)
