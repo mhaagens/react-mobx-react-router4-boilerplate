@@ -11,6 +11,9 @@ to localhost:1234 for the minified production bundle.
 Components are now loaded async with react-router-loader and the store is injected via MobX Provider. 
 If you've downloaded this boilerplate before remember to run `npm install` again.
 
+#### Read this if you've been using an earlier version of this boilerplate
+01/28/17 - Routes are now loaded through [Lazy-Route](https://github.com/mhaagens/lazy-route).
+
 ### Todo
 
 - [X] Async loading of components
