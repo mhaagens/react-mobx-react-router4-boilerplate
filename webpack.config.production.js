@@ -26,17 +26,17 @@ module.exports = {
             include: path.join(__dirname, 'src'),
             loader: 'babel-loader',
             query: {
-                "presets": ["es2015", "stage-0", "react"],
+                "presets": [[ "es2015", { modules: false } ], "stage-0", "react"],
                 "plugins": ['transform-async-to-generator', 'transform-decorators-legacy']
             }
         }, {
             test: /\.scss$/i,
-            loader: ExtractTextPlugin.extract(['css', 'postcss', 'resolve-url', 'sass?sourceMap']),
+            loader: ExtractTextPlugin.extract(['css-loader', 'postcss-loader', 'resolve-url-loader', 'sass-loader?sourceMap']),
         }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
             loaders: [
-                'file?hash=sha512&digest=hex&name=assets/[hash].[ext]',
-                'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                'file-loader?hash=sha512&digest=hex&name=assets/[hash].[ext]',
+                'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
             ]
         }]
     },

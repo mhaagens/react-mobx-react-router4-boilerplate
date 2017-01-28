@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 import { Provider, observer } from 'mobx-react'
+import LazyRoute from 'lazy-route'
 import DevTools from 'mobx-react-devtools'
 
 import TopBar from './TopBar'
@@ -28,11 +29,29 @@ export default class App extends Component {
 						{/*<DevTools />*/}
 						<TopBar />
 
-						<Match exactly pattern="/" component={require('react-router?name=home!./Home')} />
-						<Match exactly pattern="/posts" component={require('react-router?name=subpage!./Subpage')} />
-						<Match pattern="/posts/:id" component={require('react-router?name=subitem!./Subitem')} />
-						<Match exactly pattern="/login" component={require('react-router?name=login!./Login')} />
-						<Miss component={require('react-router?name=notfound!./NotFound')} />
+						<Match 
+						  exactly
+						  pattern="/"
+						  render={(props) => <LazyRoute {...props} component={System.import('./Home')} />}
+						/>
+						<Match 
+						  exactly
+						  pattern="/posts"
+						  render={(props) => <LazyRoute {...props} component={System.import('./Subpage')} />}
+						/>
+						<Match 
+						  exactly
+						  pattern="/posts/:id"
+						  render={(props) => <LazyRoute {...props} component={System.import('./Subitem')} />}
+						/>
+						<Match 
+						  exactly
+						  pattern="/login"
+						  render={(props) => <LazyRoute {...props} component={System.import('./Login')} />}
+						/>
+						<Miss 
+						  render={(props) => <LazyRoute {...props} component={System.import('./NotFound')} />}
+						/>
 						{!!(timeToRefresh && timeToRefresh <= 4) && this.store.refreshToken()}
 					<footer>
 						Cobbled together by <a href="https://twitter.com/mhaagens" target="_blank">@mhaagens</a> | github: <a href="https://github.com/mhaagens" target="_blank">mhaagens</a>

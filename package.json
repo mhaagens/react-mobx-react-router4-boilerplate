@@ -37,17 +37,17 @@
     "postcss-loader": "^0.13.0",
     "precss": "^1.4.0",
     "react-hot-loader": "^3.0.0-beta.2",
-    "react-router-loader": "^0.5.4",
     "resolve-url-loader": "^1.6.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.25",
+    "webpack": "beta",
     "webpack-dev-server": "^2.1.0-beta.8"
   },
   "dependencies": {
     "axios": "^0.15.0",
     "faker": "^3.1.0",
+    "lazy-route": "^1.0.7",
     "mobx": "^2.5.2",
     "mobx-react": "^3.5.7",
     "mobx-react-devtools": "^4.2.6",
@@ -55,7 +55,8 @@
     "package": "^1.0.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-router": "^4.0.0-alpha.4",
+    "react-router": "next",
+    "webpack-dev-server": "beta",
     "whatwg-fetch": "^1.0.0"
   },
   "repository": {
