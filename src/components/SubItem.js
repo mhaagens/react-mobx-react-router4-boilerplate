@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import DataWrapper from './DataWrapper'
 import Protected from './Protected'

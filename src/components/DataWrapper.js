@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 
 export default function DataWrapper(Component) {
 	@inject(['store']) @observer
@@ -11,8 +11,9 @@ export default function DataWrapper(Component) {
 		}
 
 		componentDidMount() {
-			let pathname = this.props.location.pathname
-			let id = this.props.params.id ? this.props.params.id : null
+			console.log(this.props)
+			let pathname = this.props.match.url
+			let id = this.props.match.id ? this.props.match.id : null
 			this.store.fetchData(pathname, id)
 		}
 

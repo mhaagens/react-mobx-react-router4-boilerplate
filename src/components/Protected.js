@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 
 export default function Protected(Component) {
 	@inject(['store']) @observer

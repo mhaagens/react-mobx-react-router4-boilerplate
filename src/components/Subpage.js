@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Match, Link } from 'react-router'
+import { Match, Link } from 'react-router-dom'
 
 import Protected from './Protected'
 import DataWrapper from './DataWrapper'
@@ -20,7 +20,7 @@ export default class Subpage extends Component {
 				<ul>
 					{this.store.items && this.store.items.length ? this.store.items.slice(6,12).map(post => {
 						return <li key={post.id}>
-						<Link to={`${this.props.pathname}/${post.id}`} activeClassName="active">
+						<Link to={`${this.props.match.path}/${post.id}`}>
 						<h1>{post.title}</h1>
 						</Link>
 						<p>{post.body.substring(0, 120)}</p>

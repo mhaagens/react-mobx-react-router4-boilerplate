@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 @inject("store") @observer
 export default class TopNav extends Component {
@@ -19,8 +19,8 @@ export default class TopNav extends Component {
 		const { authenticated, authenticating } = this.store
 		return (
 			<nav>
-				<Link to="/" activeOnlyWhenExact activeClassName="active">Home</Link>
-				{authenticated && <Link to="/posts" activeClassName="active">Posts</Link>}
+				<Link to="/">Home</Link>
+				{authenticated && <Link to="/posts">Posts</Link>}
 			</nav>
 		)
 	}

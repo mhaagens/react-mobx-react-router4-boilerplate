@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 
 @inject("store") @observer
 export default class Login extends Component {

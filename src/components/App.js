@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Match, Miss, Link } from 'react-router'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Provider, observer } from 'mobx-react'
 import LazyRoute from 'lazy-route'
 import DevTools from 'mobx-react-devtools'
@@ -23,34 +23,31 @@ export default class App extends Component {
 	render() {
 		const { authenticated, authenticating, timeToRefresh, refreshToken } = this.store
 		return (
-			<BrowserRouter>
+			<Router>
 				<Provider store={this.store}>
 					<div className="wrapper">
 						{/*<DevTools />*/}
 						<TopBar />
 
-						<Match 
-						  exactly
-						  pattern="/"
+						<Route 
+						  exact
+						  path="/"
 						  render={(props) => <LazyRoute {...props} component={System.import('./Home')} />}
 						/>
-						<Match 
-						  exactly
-						  pattern="/posts"
+						<Route 
+						  exact
+						  path="/posts"
 						  render={(props) => <LazyRoute {...props} component={System.import('./Subpage')} />}
 						/>
-						<Match 
-						  exactly
-						  pattern="/posts/:id"
+						<Route 
+						  exact
+						  path="/posts/:id"
 						  render={(props) => <LazyRoute {...props} component={System.import('./Subitem')} />}
 						/>
-						<Match 
-						  exactly
-						  pattern="/login"
+						<Route 
+						  exact
+						  path="/login"
 						  render={(props) => <LazyRoute {...props} component={System.import('./Login')} />}
-						/>
-						<Miss 
-						  render={(props) => <LazyRoute {...props} component={System.import('./NotFound')} />}
 						/>
 						{!!(timeToRefresh && timeToRefresh <= 4) && this.store.refreshToken()}
 					<footer>
@@ -58,7 +55,7 @@ export default class App extends Component {
 					</footer>
 					</div>
 				</Provider>
-			</BrowserRouter>
+			</Router>
 		)
 	}
 }
