@@ -4698,7 +4698,7 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-router-dom@next:
+react-router-dom@4.0.0-beta.3:
   version "4.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.0.0-beta.3.tgz#3b7e98d8b9e03d61acab0fcccaabc1cf1723ce5f"
   dependencies:
