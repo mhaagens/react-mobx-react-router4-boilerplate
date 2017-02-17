@@ -32,22 +32,22 @@ export default class App extends Component {
 						<Route 
 						  exact
 						  path="/"
-						  render={(props) => <LazyRoute {...props} component={System.import('./Home')} />}
+						  render={(props) => <LazyRoute {...props} component={import('./Home')} />}
 						/>
 						<Route 
 						  exact
 						  path="/posts"
-						  render={(props) => <LazyRoute {...props} component={System.import('./Subpage')} />}
+						  render={(props) => <LazyRoute {...props} component={import('./Subpage')} />}
 						/>
 						<Route 
 						  exact
 						  path="/posts/:id"
-						  render={(props) => <LazyRoute {...props} component={System.import('./Subitem')} />}
+						  render={(props) => <LazyRoute {...props} component={import('./Subitem')} />}
 						/>
 						<Route 
 						  exact
 						  path="/login"
-						  render={(props) => <LazyRoute {...props} component={System.import('./Login')} />}
+						  render={(props) => <LazyRoute {...props} component={import('./Login')} />}
 						/>
 						{!!(timeToRefresh && timeToRefresh <= 4) && this.store.refreshToken()}
 					<footer>
