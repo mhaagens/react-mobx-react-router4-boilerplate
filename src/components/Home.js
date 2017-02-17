@@ -19,7 +19,7 @@ export default class Home extends Component {
 						<h1>React MobX React-Router 4 Boilerplate</h1>
 					</div>
 					<div className="hero-subunit">
-						<h4>A simple starting point for React with routing, data-fetching and state management.</h4>
+						<h4>A simple starting point for React with routing, data-fetching and state management!</h4>
 					</div>
 					<div className="github-buttons">
 						<a href="https://github.com/mhaagens/react-mobx-react-router4-boilerplate" target="_blank">Download from GitHub</a>

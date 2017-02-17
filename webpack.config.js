@@ -32,8 +32,6 @@ module.exports = {
                         "react"
                     ],
                     plugins: [
-                        "syntax-dynamic-import",
-                        "react-hot-loader/babel",
                         "transform-async-to-generator",
                         "transform-decorators-legacy"
                     ]

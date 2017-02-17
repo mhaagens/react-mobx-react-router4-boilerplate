@@ -27,7 +27,7 @@ module.exports = {
             loader: 'babel-loader',
             query: {
                 "presets": [[ "es2015", { modules: false } ], "stage-0", "react"],
-                "plugins": ['syntax-dynamic-import', 'transform-async-to-generator', 'transform-decorators-legacy']
+                "plugins": ['transform-async-to-generator', 'transform-decorators-legacy']
             }
         }, {
             test: /\.scss$/i,

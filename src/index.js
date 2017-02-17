@@ -17,10 +17,9 @@ ReactDOM.render(
 // Hot Module Replacement API
 if (module.hot) {
   module.hot.accept('./components/App', () => {
-    const NextApp = require('./components/App').default;
     ReactDOM.render(
       <AppContainer>
-        <NextApp store={appState} />
+        <App store={appState} />
       </AppContainer>
       ,
       document.getElementById('root')
