@@ -13,6 +13,7 @@ If you've downloaded this boilerplate before remember to run `npm install` again
 
 #### Read this if you've been using an earlier version of this boilerplate
 
+* 04/04/17 - Upgraded to React Router 4 @ latest
 * 01/31/17 - Upgraded to React Router 4 Beta
 * 01/28/17 - Routes are now loaded through [Lazy-Route](https://github.com/mhaagens/lazy-route).
 
