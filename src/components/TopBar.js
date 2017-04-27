@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import TopNav from './TopNav'
 import Button from './ui/Button'
 
+@withRouter
 @inject("store") @observer
 export default class TopBar extends Component {
 
@@ -23,7 +24,7 @@ export default class TopBar extends Component {
 		const { authenticated } = this.store
 		return (
 			<div className="topbar">
-				<TopNav />
+				<TopNav location={this.props.location}/>
 				<Button onClick={this.authenticate.bind(this)} title={authenticated ? 'Log out' : 'Sign in'}/>
 			</div>
 		)
