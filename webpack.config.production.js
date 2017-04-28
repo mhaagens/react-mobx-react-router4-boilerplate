@@ -30,7 +30,7 @@ module.exports = {
                 "plugins": ['transform-async-to-generator', 'transform-decorators-legacy']
             }
         }, {
-            test: /\.scss$/i,
+            test: /\.scss|css$/i,
             loader: ExtractTextPlugin.extract(['css-loader', 'postcss-loader', 'resolve-url-loader', 'sass-loader?sourceMap']),
         }, {
             test: /\.(jpe?g|png|gif|svg)$/i,
@@ -38,7 +38,10 @@ module.exports = {
                 'file-loader?hash=sha512&digest=hex&name=assets/[hash].[ext]',
                 'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
             ]
-        }]
+        },
+        { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+        { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },    
+        ]
     },
     plugins: [
         new webpack.DefinePlugin({
