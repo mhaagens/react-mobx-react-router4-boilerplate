@@ -4,7 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "node devserver.js",
+    "start": "webpack-dev-server --config webpack.config.js",
     "build": "rimraf ./dist && webpack --config webpack.config.production.js",
     "preview": "http-server ./dist -p 1234 -c-1",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +20,6 @@
   "author": "Martin Haagensli",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^6.5.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-plugin-transform-async-to-generator": "^6.16.0",
@@ -35,29 +34,32 @@
     "image-webpack-loader": "^2.0.0",
     "node-sass": "^3.10.1",
     "postcss-loader": "^0.13.0",
-    "precss": "^1.4.0",
-    "react-hot-loader": "^3.0.0-beta.2",
+    "react-hot-loader": "next",
     "resolve-url-loader": "^1.6.0",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "2.2.1",
-    "webpack-dev-server": "2.1.0-beta.8"
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
     "axios": "^0.15.0",
+    "css-declaration-sorter": "^2.0.0",
+    "css-mqpacker": "^5.0.1",
     "faker": "^3.1.0",
-    "http-server": "^0.9.0",
+    "http-server": "^0.10.0",
     "lazy-route": "^1.0.7",
     "mobx": "^2.5.2",
     "mobx-react": "^3.5.7",
     "mobx-react-devtools": "^4.2.6",
     "moment": "^2.15.1",
     "package": "^1.0.1",
+    "postcss-cssnext": "^2.10.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router-dom": "latest",
+    "rfx-core": "^1.5.3",
     "whatwg-fetch": "^1.0.0"
   },
   "repository": {

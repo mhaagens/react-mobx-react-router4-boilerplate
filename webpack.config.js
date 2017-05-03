@@ -1,18 +1,25 @@
 var path = require("path");
 var webpack = require("webpack");
-var precss = require("precss");
-var autoprefixer = require("autoprefixer");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: [
         "react-hot-loader/patch",
+        "webpack-dev-server/client?http://0.0.0.0:3000",
+        "webpack/hot/only-dev-server",
         "babel-polyfill",
         "whatwg-fetch",
-        "webpack-dev-server/client?http://localhost:3000",
-        "webpack/hot/only-dev-server",
         "./src/index"
     ],
+    devServer: {
+        hot: true,
+        contentBase: path.resolve(__dirname, "dist"),
+        port: 3000,
+        host: "0.0.0.0",
+        publicPath: "/",
+        historyApiFallback: true,
+        disableHostCheck: true
+    },
     output: {
         path: path.join(__dirname, "dist"),
         publicPath: "/",
@@ -20,14 +27,14 @@ module.exports = {
     },
     devtool: "eval",
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "babel-loader",
-                query: {
+                options: {
                     presets: [
-                        [ "es2015", { modules: false } ],
+                        ["es2015", {"modules": false}],
                         "stage-0",
                         "react"
                     ],
@@ -39,35 +46,46 @@ module.exports = {
             },
             {
                 test: /\.scss|css$/,
-                loader: "style-loader!css-loader!postcss-loader!resolve-url-loader!sass-loader?sourceMap"
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "postcss-loader",
+                    "resolve-url-loader",
+                    "sass-loader?sourceMap"
+                ]
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
-                loaders: [
-                    "file-loader?hash=sha512&digest=hex&name=assets/[hash].[ext]",
-                    "image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false"
+                use: [
+                    "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
+                    {
+                        loader: "image-webpack-loader",
+                        options: {
+                            progressive: true,
+                            optimizationLevel: 7,
+                            interlaced: false,
+                            pngquant: {
+                                quality: "65-90",
+                                speed: 4
+                            }
+                        }
+                    }
                 ]
             },
-            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
+            {
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: "url-loader?limit=10000&mimetype=application/font-woff"
+            },
+            {
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: "file-loader"
+            }
         ]
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({ hash: false, template: "./index.hbs" }),
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb/),
-        new webpack.LoaderOptionsPlugin({
-            test: /\.scss$/,
-            debug: true,
-            options: {
-                postcss: function() {
-                    return [ precss, autoprefixer ];
-                },
-                context: path.join(__dirname, "src"),
-                output: { path: path.join(__dirname, "dist") }
-            }
-        })
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb/)
     ]
 };
-
