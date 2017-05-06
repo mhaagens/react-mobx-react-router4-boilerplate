@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Route, Link } from "react-router-dom";
-import ActiveLink from "./ui/Activelink";
+import ActiveLink from "./ui/ActiveLink";
 
 @inject("store")
 @observer
