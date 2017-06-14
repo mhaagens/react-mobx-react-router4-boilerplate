@@ -6,7 +6,7 @@ import DevTools from "mobx-react-devtools";
 
 import TopBar from "./TopBar";
 
-@inject("store")
+@inject("store", "routing")
 @observer
 export default class App extends Component {
 	constructor(props) {
@@ -31,7 +31,7 @@ export default class App extends Component {
 		return (
 			<div className="wrapper">
 				{/*<DevTools />*/}
-				<TopBar />
+				<TopBar location={this.props.routing.location} />
 
 				<Route
 					exact

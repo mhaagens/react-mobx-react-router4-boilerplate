@@ -59,13 +59,19 @@ module.exports = {
                 use: [
                     "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
                     {
-                        loader: "image-webpack-loader",
-                        options: {
-                            progressive: true,
-                            optimizationLevel: 7,
-                            interlaced: false,
+                        loader: 'image-webpack-loader',
+                        query: {
+                            mozjpeg: {
+                                progressive: true
+                            },
+                            gifsicle: {
+                                interlaced: false
+                            },
+                            optipng: {
+                                optimizationLevel: 7
+                            },
                             pngquant: {
-                                quality: "65-90",
+                                quality: '65-90',
                                 speed: 4
                             }
                         }
