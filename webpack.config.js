@@ -59,7 +59,7 @@ module.exports = {
                 use: [
                     "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
                     {
-                        loader: 'image-webpack-loader',
+                        loader: "image-webpack-loader",
                         query: {
                             mozjpeg: {
                                 progressive: true
@@ -71,7 +71,7 @@ module.exports = {
                                 optimizationLevel: 7
                             },
                             pngquant: {
-                                quality: '65-90',
+                                quality: "65-90",
                                 speed: 4
                             }
                         }
@@ -84,7 +84,8 @@ module.exports = {
             },
             {
                 test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                use: "file-loader"
+                use: "file-loader",
+                exclude: /images/
             }
         ]
     },
