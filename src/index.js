@@ -7,7 +7,7 @@ import {AppContainer} from "react-hot-loader";
 import {rehydrate, hotRehydrate} from "rfx-core";
 
 import {isProduction} from "./utils/constants";
-import App from "./components/App";
+import Root from "./components/Root";
 import stores from "./stores/stores";
 import {RouterStore, syncHistoryWithStore} from 'mobx-react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -20,18 +20,18 @@ const renderApp = Component => {
     // history.subscribe((location, action) => console.log(location.pathname));
     render(
         <AppContainer>
-            <Router history={history}>
-                <Provider store={isProduction ? store : hotRehydrate()} routing={routeStore}>
-                    <App />
-                </Provider>
-            </Router>
+            <Provider store={isProduction ? store : hotRehydrate()} routing={routeStore}>
+                <Router history={history}>
+                    <Component />
+                </Router>
+            </Provider>
         </AppContainer>,
         document.getElementById("root")
     );
 };
 
-renderApp(App);
+renderApp(Root);
 
 if (module.hot) {
-    module.hot.accept(() => renderApp(App));
+    module.hot.accept(() => renderApp(Root));
 }
