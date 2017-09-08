@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Redirect } from "react-router-dom";
 
-export default function Protected(Component) {
+export default function Protected(Children) {
 	@inject("store")
 	@observer
 	class AuthenticatedComponent extends Component {
@@ -16,7 +16,7 @@ export default function Protected(Component) {
 			return (
 				<div className="authComponent">
 					{authenticated
-						? <Component {...this.props} />
+						? <Children {...this.props} />
 						: !authenticating && !authenticated
 								? <Redirect
 										to={{
