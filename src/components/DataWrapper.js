@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Redirect } from "react-router-dom";
 
-export default function DataWrapper(Component) {
+export default function DataWrapper(WrappedComponent) {
 	@inject("store")
 	@observer
 	class DataFetcher extends Component {
@@ -23,7 +23,7 @@ export default function DataWrapper(Component) {
 		}
 
 		render() {
-			return <Component {...this.props} />;
+			return <WrappedComponent {...this.props} />;
 		}
 	}
 	return DataFetcher;
