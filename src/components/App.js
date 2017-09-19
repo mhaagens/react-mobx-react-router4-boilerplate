@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import LazyRoute from "lazy-route";
 import DevTools from "mobx-react-devtools";
 
 import TopBar from "./TopBar";
 
+@withRouter
 @inject("store")
 @observer
 export default class App extends Component {
