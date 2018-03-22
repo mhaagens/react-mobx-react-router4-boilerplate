@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import {observable, action, computed} from "mobx";
 import axios from "axios";
 
 export default class AppState {
@@ -7,7 +7,7 @@ export default class AppState {
   @observable items;
   @observable item;
   @observable testval;
-
+  
   constructor() {
     this.authenticated = false;
     this.authenticating = false;
@@ -15,36 +15,39 @@ export default class AppState {
     this.item = {};
     this.testval = "Huang Jian";
   }
-
+  
   async fetchData(pathname, id) {
-    const { data } = await axios.get(
+    const {data} = await axios.get(
       `https://jsonplaceholder.typicode.com${pathname}`
     );
     data.length > 0 ? this.setData(data) : this.setSingle(data);
   }
-
+  
   @action setData(data) {
     this.items = data;
   }
-
+  
   @action setSingle(data) {
     this.item = data;
   }
-
+  
   @action clearItems() {
     this.items = [];
     this.item = {};
   }
-
+  
   @action authenticate() {
     return new Promise((resolve, reject) => {
       this.authenticating = true;
       setTimeout(() => {
         this.authenticated = !this.authenticated;
         this.authenticating = false;
-        console.log()
         resolve(this.authenticated);
       }, 0);
     });
+  }
+  
+  @computed get getItem() {
+    return this.items.filter((todo) => todo.id === 1)
   }
 }
