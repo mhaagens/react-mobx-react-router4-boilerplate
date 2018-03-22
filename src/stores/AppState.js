@@ -6,7 +6,6 @@ export default class AppState {
   @observable authenticating;
   @observable items;
   @observable item;
-
   @observable testval;
 
   constructor() {
@@ -14,15 +13,13 @@ export default class AppState {
     this.authenticating = false;
     this.items = [];
     this.item = {};
-
-    this.testval = "Cobbled together by ";
+    this.testval = "Huang Jian";
   }
 
   async fetchData(pathname, id) {
-    let { data } = await axios.get(
+    const { data } = await axios.get(
       `https://jsonplaceholder.typicode.com${pathname}`
     );
-    console.log(data);
     data.length > 0 ? this.setData(data) : this.setSingle(data);
   }
 
@@ -45,6 +42,7 @@ export default class AppState {
       setTimeout(() => {
         this.authenticated = !this.authenticated;
         this.authenticating = false;
+        console.log()
         resolve(this.authenticated);
       }, 0);
     });

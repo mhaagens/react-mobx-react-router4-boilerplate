@@ -33,7 +33,6 @@ export default class App extends Component {
 			<div className="wrapper">
 				{/*<DevTools />*/}
 				<TopBar />
-
 				<Route
 					exact
 					path="/"
