@@ -14,6 +14,8 @@ module.exports = {
     ],
     vendor: [
       "react",
+      "mobx",
+      "mobx-react",
       "react-dom",
       "react-router",
       "whatwg-fetch"
@@ -90,7 +92,7 @@ module.exports = {
     runtimeChunk: {
       name: 'manifest'
     },
-    splitChunks:{
+    splitChunks: {
       chunks: 'async',
       minSize: 30000,
       minChunks: 1,

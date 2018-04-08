@@ -2,12 +2,21 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const isDebug = process.env.NODE_ENV === 'development'
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const isDebug = process.env.NODE_ENV === 'development';
 
 module.exports = {
   mode: isDebug ? 'development' : 'production',
   entry: {
-    vendor: ["react", "react-dom", "react-router"],
+    vendor: [
+      "react",
+      "mobx",
+      "mobx-react",
+      "react-dom",
+      "react-router",
+      "whatwg-fetch"
+    ],
     app: ["./src/index"]
   },
   output: {
@@ -21,6 +30,14 @@ module.exports = {
     runtimeChunk: {
       name: 'manifest'
     },
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ],
     splitChunks:{
       chunks: 'async',
       minSize: 30000,
