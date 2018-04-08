@@ -56,15 +56,13 @@ module.exports = {
       },
       {
         test: /\.scss|css$/i,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [
-            "css-loader",
-            "postcss-loader?sourceMap",
-            "resolve-url-loader",
-            "sass-loader?sourceMap"
-          ]
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader?sourceMap",
+          "resolve-url-loader",
+          "sass-loader?sourceMap"
+        ]
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
