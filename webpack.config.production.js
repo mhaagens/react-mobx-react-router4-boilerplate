@@ -1,9 +1,11 @@
-var path = require("path");
-var webpack = require("webpack");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const isDebug = process.env.NODE_ENV === 'development'
 
 module.exports = {
+  mode: isDebug ? 'development' : 'production',
   entry: {
     vendor: ["react", "react-dom", "react-router"],
     app: ["./src/index"]
@@ -15,6 +17,36 @@ module.exports = {
     chunkFilename: "assets/[name].[chunkhash].js"
   },
   devtool: 'source-map',
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest'
+    },
+    splitChunks:{
+      chunks: 'async',
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: false,
+      cacheGroups: {
+        vendor: {
+          name: 'vendor',
+          chunks: 'initial',
+          priority: -10,
+          reuseExistingChunk: false,
+          test: /node_modules\/(.*)\.js/
+        },
+        styles: {
+          name: 'styles',
+          test: /\.(scss|css)$/,
+          chunks: 'all',
+          minChunks: 1,
+          reuseExistingChunk: true,
+          enforce: true
+        }
+      }
+    }
+  },
   module: {
     rules: [
       {
@@ -77,25 +109,13 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(true),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      minChunks: Infinity
+    new MiniCssExtractPlugin({
+      filename: 'css/app.[name].css',
+      chunkFilename: 'css/app.[contenthash:12].css'
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
-      compress: {
-        warnings: false,
-        drop_console: true,
-        screw_ie8: true
-      },
-      output: {
-        comments: false
-      }
-    }),
-    new ExtractTextPlugin("assets/styles.css"),
     new HtmlWebpackPlugin({
       hash: false,
-      template: "./index.hbs"
+      template: "./index.html"
     })
   ]
 };

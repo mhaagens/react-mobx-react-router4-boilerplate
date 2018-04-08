@@ -1,15 +1,24 @@
-var path = require("path");
-var webpack = require("webpack");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const isDebug = process.env.NODE_ENV === 'development'
 
 module.exports = {
-  entry: [
-    "react-hot-loader/patch",
-    "webpack-dev-server/client?http://0.0.0.0:3000",
-    "webpack/hot/only-dev-server",
-    "whatwg-fetch",
-    "./src/index"
-  ],
+  mode: isDebug ? 'development' : 'production',
+  entry: {
+    app: [
+      "react-hot-loader/patch",
+      "webpack-dev-server/client?http://0.0.0.0:3000",
+      "webpack/hot/only-dev-server",
+      "./src/index"
+    ],
+    vendor: [
+      "react",
+      "react-dom",
+      "react-router",
+      "whatwg-fetch"
+    ]
+  },
   devServer: {
     hot: true,
     contentBase: path.resolve(__dirname, "dist"),
@@ -77,10 +86,32 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest'
+    },
+    splitChunks:{
+      chunks: 'async',
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: false,
+      cacheGroups: {
+        vendor: {
+          name: 'vendor',
+          chunks: 'initial',
+          priority: -10,
+          reuseExistingChunk: false,
+          test: /node_modules\/(.*)\.js/
+        }
+      }
+    }
+  },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({hash: false, template: "./index.hbs"}),
+    new HtmlWebpackPlugin({hash: false, template: "./index.html"}),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb/)
   ]
 };
