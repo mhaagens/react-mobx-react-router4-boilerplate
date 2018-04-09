@@ -34,7 +34,10 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: true, // set to true if you want JS source maps,
+        uglifyOptions: {
+          warnings: false
+        }
       }),
       new OptimizeCSSAssetsPlugin({})
     ],
@@ -115,6 +118,9 @@ module.exports = {
         use: "file-loader"
       }
     ]
+  },
+  performance: {
+    hints: false
   },
   plugins: [
     new webpack.DefinePlugin({

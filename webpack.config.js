@@ -110,6 +110,9 @@ module.exports = {
       }
     }
   },
+  performance: {
+    hints: true
+  },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
