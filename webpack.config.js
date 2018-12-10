@@ -50,7 +50,11 @@ module.exports = {
   resolve : {
     extensions: ['.js', '.jsx', '.json', '.web.js'],
     alias: {
-    
+      components: path.resolve('./src', 'components'),
+      constants: path.resolve('./src', './constants'),
+      api: path.resolve('./src', './api'),
+      routes: path.resolve('./src', './routes'),
+      utils: path.resolve('./src', './utils')
     }
   },
   devServer: {
@@ -67,7 +71,7 @@ module.exports = {
     publicPath: "/",
     filename: "app.[hash].js"
   },
-  devtool: "#cheap-eval-source-map",
+  devtool: "#source-map",
   module: {
     rules: [
       {

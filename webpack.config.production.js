@@ -54,7 +54,11 @@ module.exports = {
   resolve : {
     extensions: ['.js', '.jsx', '.json', '.web.js'],
     alias: {
-    
+      components: path.resolve('./src', 'components'),
+      constants: path.resolve('./src', './constants'),
+      api: path.resolve('./src', './api'),
+      routes: path.resolve('./src', './routes'),
+      utils: path.resolve('./src', './utils')
     }
   },
   

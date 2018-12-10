@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import { inject, observer } from "mobx-react";
 import WelcomePage from '../components/WelcomePage';
 
-export default class HomeContainer extends Component {
+@inject('routerStore')
+@observer
+class HomeContainer extends Component {
   render() {
     return (
       <WelcomePage />
     );
   }
 }
+
+export default HomeContainer;

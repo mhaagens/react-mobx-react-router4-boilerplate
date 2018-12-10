@@ -1,5 +1,5 @@
 import axios from 'axios';
-import isDevelopment from '../constants/env';
+import { isDevelopment } from '../constants/env';
 
 // https://www.jianshu.com/p/7a9fbcbb1114
 
