@@ -1,5 +1,3 @@
 import baseRoute from './Home';
 
-export default [
-  ...baseRoute,
-];
+export default [...baseRoute];

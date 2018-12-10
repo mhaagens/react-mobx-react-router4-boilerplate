@@ -10,24 +10,19 @@ export default class WelcomePage extends Component {
     };
     this.handleFetchData();
   }
-  
-  
+
   async handleFetchData() {
     const { status, data } = await fetchAPI.get('/book/list/');
-    if(status == 200){
+    if (status == 200) {
       this.setState({
         bookList: data.data
       });
     }
   }
-  
+
   render() {
     const { bookList } = this.state;
     console.log(bookList);
-    return (
-      <div className={style.welcome}>
-        WelcomePage
-      </div>
-    );
+    return <div className={style.welcome}>WelcomePage</div>;
   }
 }

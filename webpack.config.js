@@ -1,77 +1,47 @@
-const path = require("path");
-const cssnano = require('cssnano');
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const POSTCSS = require('./postcss.config');
 
 const isDebug = process.env.NODE_ENV === 'development';
-const BASE_CSS_LOADER = 'css-loader?importLoaders=1&sourceMap';
-
-const POSTCSS = [
-  cssnano({
-    autoprefixer: {
-      add: true,
-      remove: false,
-      browsers: [
-        "last 2 versions",
-        "safari >= 7"
-      ]
-    },
-    discardComments: {
-      removeAll: true
-    },
-    discardUnused: false,
-    mergeIdents: false,
-    reduceIdents: false,
-    safe: true,
-    sourcemap: true
-  })
-];
-
 
 module.exports = {
   mode: isDebug ? 'development' : 'production',
   entry: {
-    vendor: [
-      "react",
-      "react-dom",
-      "react-router",
-      'history',
-      "mobx",
-      "mobx-react",
-      "mobx-react-router"
-    ],
+    vendor: ['react', 'react-dom', 'react-router', 'history', 'mobx', 'mobx-react', 'mobx-react-router'],
     app: [
-      "react-hot-loader/patch",
-      "webpack-dev-server/client?http://0.0.0.0:3000",
-      "webpack/hot/only-dev-server",
-      "./src/index"
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://0.0.0.0:3000',
+      'webpack/hot/only-dev-server',
+      './src/index'
     ]
   },
-  resolve : {
+  resolve: {
     extensions: ['.js', '.jsx', '.json', '.web.js'],
     alias: {
-      components: path.resolve('./src', 'components'),
-      constants: path.resolve('./src', './constants'),
-      api: path.resolve('./src', './api'),
-      routes: path.resolve('./src', './routes'),
-      utils: path.resolve('./src', './utils')
+      api: path.resolve(__dirname, 'src/api'),
+      utils: path.resolve(__dirname, 'src/utils'),
+      routes: path.resolve(__dirname, 'src/routes'),
+      components: path.resolve(__dirname, 'src/components'),
+      constants: path.resolve(__dirname, 'src/constants')
     }
   },
   devServer: {
     hot: true,
-    contentBase: path.resolve(__dirname, "dist"),
+    contentBase: path.resolve(__dirname, 'dist'),
     port: 3000,
-    host: "0.0.0.0",
-    publicPath: "/",
+    host: '0.0.0.0',
+    publicPath: '/',
     historyApiFallback: true,
     disableHostCheck: true
   },
   output: {
-    path: path.join(__dirname, "dist"),
-    publicPath: "/",
-    filename: "app.[hash].js"
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/',
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[id].js'
   },
-  devtool: "#source-map",
+  devtool: '#source-map',
   module: {
     rules: [
       {
@@ -91,20 +61,17 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
-              sourceMap: true,
-              import: true,
               modules: true,
+              importLoaders: 1,
+              minimize: false,
               localIdentName: '[name]__[local]___[hash:base64:5]'
             }
           },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
+              plugins: POSTCSS.plugins,
+              sourceMap: isDebug
             }
           },
           {
@@ -120,14 +87,17 @@ module.exports = {
         include: /node_modules/,
         use: [
           'style-loader',
-          BASE_CSS_LOADER,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
+              plugins: POSTCSS.plugins,
+              sourceMap: isDebug
             }
           },
           {
@@ -140,28 +110,29 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        // exclude : null,
         use: [
           'style-loader',
-          BASE_CSS_LOADER,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
           {
             loader: 'postcss-loader',
             options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
+              plugins: POSTCSS.plugins,
+              sourceMap: isDebug
             }
           }
         ]
       },
-      
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
-          "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
+          'file-loader?hash=sha512&digest=hex&limit=8192&name=assets/[name].[hash:8].[ext]',
           {
-            loader: "image-webpack-loader",
+            loader: 'image-webpack-loader',
             options: {
               optipng: {
                 optimizationLevel: 7
@@ -171,7 +142,7 @@ module.exports = {
               },
               pngquant: {
                 quality: '65-90',
-                speed: 4,
+                speed: 4
               },
               mozjpeg: {
                 quality: 65,
@@ -183,11 +154,11 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
+        use: 'url-loader?limit=10000&mimetype=application/font-woff'
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: "file-loader"
+        use: 'file-loader'
       }
     ]
   },
@@ -221,7 +192,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       hash: false,
-      template: "./src/index.html"
+      template: './src/index.html'
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/)
   ]

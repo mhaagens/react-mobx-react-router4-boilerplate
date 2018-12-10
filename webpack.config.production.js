@@ -1,69 +1,25 @@
+const path = require('path');
+const merge = require('webpack-merge');
+const webpack = require('webpack');
 const cssnano = require('cssnano');
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const webpackConfig = require('./webpack.config');
 
-const isDebug = process.env.NODE_ENV === 'development';
-const BASE_CSS_LOADER = 'css-loader?importLoaders=1&sourceMap';
-
-const POSTCSS = [
-  cssnano({
-    autoprefixer: {
-      add: true,
-      remove: false,
-      browsers: [
-        "last 2 versions",
-        "safari >= 7"
-      ]
-    },
-    discardComments: {
-      removeAll: true
-    },
-    discardUnused: false,
-    mergeIdents: false,
-    reduceIdents: false,
-    safe: true,
-    sourcemap: true
-  })
-];
-
-module.exports = {
-  mode: isDebug ? 'development' : 'production',
-  entry: {
-    vendor: [
-      "react",
-      "react-dom",
-      "react-router",
-      'history',
-      "mobx",
-      "mobx-react",
-      "mobx-react-router"
-    ],
-    app: ["./src/index"]
-  },
+const mergeConfig = merge(webpackConfig, {
   output: {
-    path: path.join(__dirname, "dist"),
-    publicPath: "/",
-    filename: "assets/[name].[hash].js",
-    chunkFilename: "assets/[name].[chunkhash].js"
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/',
+    filename: 'js/[name].[hash:12].js',
+    chunkFilename: 'js/[id].[chunkhash:12].js'
   },
-  
-  resolve : {
-    extensions: ['.js', '.jsx', '.json', '.web.js'],
-    alias: {
-      components: path.resolve('./src', 'components'),
-      constants: path.resolve('./src', './constants'),
-      api: path.resolve('./src', './api'),
-      routes: path.resolve('./src', './routes'),
-      utils: path.resolve('./src', './utils')
-    }
-  },
-  
-  devtool: 'source-map',
-  
+
+  devtool: '#source-map',
+
+  module: {},
+
   optimization: {
     runtimeChunk: {
       name: 'manifest'
@@ -72,14 +28,30 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true,
         uglifyOptions: {
-          warnings: false
+          warnings: false,
+          mangle: {
+            toplevel: true
+          }
         }
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: cssnano,
+        cssProcessorOptions: {
+          autoprefixer: false,
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true
+              }
+            }
+          ]
+        }
+      })
     ],
-    splitChunks:{
+    splitChunks: {
       chunks: 'async',
       minSize: 30000,
       minChunks: 1,
@@ -96,7 +68,7 @@ module.exports = {
         },
         styles: {
           name: 'styles',
-          test: /\.(scss|css)$/,
+          test: /\.(less|css)$/,
           chunks: 'all',
           minChunks: 1,
           reuseExistingChunk: true,
@@ -105,143 +77,47 @@ module.exports = {
       }
     }
   },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          compact: true,
-          cacheDirectory: true
-        }
-      },
-      {
-        test: /\.less$/,
-        exclude: /node_modules/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              sourceMap: true,
-              import: true,
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]'
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true
-            }
-          }
-        ]
-      },
-      {
-        test: /\.less$/,
-        include: /node_modules/,
-        use: [
-          'style-loader',
-          BASE_CSS_LOADER,
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true
-            }
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        // exclude : null,
-        use: [
-          'style-loader',
-          BASE_CSS_LOADER,
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: function () {
-                return POSTCSS;
-              },
-              sourceMap: true
-            }
-          }
-        ]
-      },
-    
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        use: [
-          "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
-          {
-            loader: "image-webpack-loader",
-            options: {
-              optipng: {
-                optimizationLevel: 7
-              },
-              gifsicle: {
-                interlaced: false
-              },
-              pngquant: {
-                quality: '65-90',
-                speed: 4,
-              },
-              mozjpeg: {
-                quality: 65,
-                progressive: true
-              }
-            }
-          }
-        ]
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: "file-loader"
-      }
-    ]
-  },
+
   performance: {
     hints: false
   },
+
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
       }
     }),
+
     new webpack.NamedModulesPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(true),
+
     new MiniCssExtractPlugin({
       filename: 'css/app.[name].css',
       chunkFilename: 'css/app.[contenthash:12].css'
     }),
+
     new HtmlWebpackPlugin({
       hash: false,
-      template: "./src/index.html"
+      template: './src/index.html'
     })
   ]
-};
+});
+
+mergeConfig.module.rules
+  .filter((rule) => {
+    const bool =
+      rule.use &&
+      Array.isArray(rule.use) &&
+      rule.use.find((name) => {
+        if (Object.prototype.toString.call(name) === '[object Object]') {
+          name = name.loader;
+        }
+        return /css-loader/.test(name.split('?')[0]);
+      });
+    return bool;
+  })
+  .forEach((rule) => {
+    rule.use[0] = MiniCssExtractPlugin.loader;
+  });
+
+module.exports = mergeConfig;

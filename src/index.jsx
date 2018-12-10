@@ -4,10 +4,10 @@ import { configure } from 'mobx';
 import RedBox from 'redbox-react';
 import { Provider } from 'mobx-react';
 import { Router } from 'react-router-dom';
-import { AppContainer } from "react-hot-loader";
+import { AppContainer } from 'react-hot-loader';
 import store from './store';
 import App from './coreLayout';
-import { isProduction } from "./constants/env";
+import { isProduction } from './constants/env';
 
 // ========================================================
 // Store Instantiation
@@ -48,7 +48,7 @@ if (!isProduction) {
     const renderError = (error) => {
       ReactDOM.render(<RedBox error={error} />, MOUNT_NODE);
     };
-    
+
     // Wrap render in try/catch
     render = () => {
       try {
@@ -58,7 +58,7 @@ if (!isProduction) {
         renderError(error);
       }
     };
-    
+
     // hot reload
     module.hot.accept('./coreLayout', () => {
       try {
