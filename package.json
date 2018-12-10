@@ -4,9 +4,11 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
+    "lint": "eslint bin build config server src tests --ext .jsx,.js",
+    "lint:fix": "npm run lint -- --fix",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
     "build": "rimraf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
-    "preview": "pushstate-server ./dist 1234",
+    "preview": "pushstate-server ./dist 3003",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -76,6 +78,7 @@
     "css-mqpacker": "^6.0.1",
     "faker": "^4.1.0",
     "history": "^4.7.2",
+    "husky": "^1.2.0",
     "lazy-route": "^1.0.7",
     "mobx": "^5.7.0",
     "mobx-react": "^5.4.2",
@@ -90,6 +93,12 @@
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
   },
   "repository": {
     "url": "git@github.com:mhaagens/react-mobx-react-router4-boilerplate.git",
