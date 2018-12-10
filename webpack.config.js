@@ -1,25 +1,57 @@
 const path = require("path");
+const cssnano = require('cssnano');
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const isDebug = process.env.NODE_ENV === 'development'
+
+const isDebug = process.env.NODE_ENV === 'development';
+const BASE_CSS_LOADER = 'css-loader?importLoaders=1&sourceMap';
+
+const POSTCSS = [
+  cssnano({
+    autoprefixer: {
+      add: true,
+      remove: false,
+      browsers: [
+        "last 2 versions",
+        "safari >= 7"
+      ]
+    },
+    discardComments: {
+      removeAll: true
+    },
+    discardUnused: false,
+    mergeIdents: false,
+    reduceIdents: false,
+    safe: true,
+    sourcemap: true
+  })
+];
+
 
 module.exports = {
   mode: isDebug ? 'development' : 'production',
   entry: {
+    vendor: [
+      "react",
+      "react-dom",
+      "react-router",
+      'history',
+      "mobx",
+      "mobx-react",
+      "mobx-react-router"
+    ],
     app: [
       "react-hot-loader/patch",
       "webpack-dev-server/client?http://0.0.0.0:3000",
       "webpack/hot/only-dev-server",
       "./src/index"
-    ],
-    vendor: [
-      "react",
-      "mobx",
-      "mobx-react",
-      "react-dom",
-      "react-router",
-      "whatwg-fetch"
     ]
+  },
+  resolve : {
+    extensions: ['.js', '.jsx', '.json', '.web.js'],
+    alias: {
+    
+    }
   },
   devServer: {
     hot: true,
@@ -35,24 +67,91 @@ module.exports = {
     publicPath: "/",
     filename: "app.[hash].js"
   },
-  devtool: "cheap-eval-source-map",
+  devtool: "#cheap-eval-source-map",
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
+        query: {
+          compact: true,
+          cacheDirectory: true
+        }
       },
       {
-        test: /\.scss|css$/,
+        test: /\.less$/,
+        exclude: /node_modules/,
         use: [
-          "style-loader",
-          "css-loader",
-          "postcss-loader?sourceMap",
-          "resolve-url-loader",
-          "sass-loader?sourceMap"
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              sourceMap: true,
+              import: true,
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true
+            }
+          }
         ]
       },
+      {
+        test: /\.less$/,
+        include: /node_modules/,
+        use: [
+          'style-loader',
+          BASE_CSS_LOADER,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        // exclude : null,
+        use: [
+          'style-loader',
+          BASE_CSS_LOADER,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          }
+        ]
+      },
+      
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
@@ -111,12 +210,15 @@ module.exports = {
     }
   },
   performance: {
-    hints: true
+    hints: false
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({hash: false, template: "./index.html"}),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /nb/)
+    new HtmlWebpackPlugin({
+      hash: false,
+      template: "./src/index.html"
+    }),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/)
   ]
 };

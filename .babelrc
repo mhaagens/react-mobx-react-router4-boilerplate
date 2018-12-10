@@ -1,26 +1,55 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
-        "modules": false
+        "loose": true,
+        "modules": false,
+        "useBuiltIns": "usage",
+        "targets": {
+          "browsers": [
+            "> 1%",
+            "last 2 versions",
+            "Android >= 4"
+          ]
+        }
       }
     ],
-    "stage-0",
-    "stage-1",
-    "react"
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-async-to-generator",
-    "transform-decorators-legacy",
-    "transform-class-properties",
     [
-      "transform-runtime",
+      "@babel/plugin-proposal-decorators",
       {
-        "helpers": false,
-        "polyfill": false,
-        "regenerator": true
+        "legacy": true
       }
+    ],
+    "@babel/plugin-syntax-jsx",
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 2,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd-mobile",
+        "style": true
+      }
+    ],
+    [
+      "lodash"
     ]
   ]
 }

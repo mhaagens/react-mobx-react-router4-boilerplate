@@ -1,21 +1,46 @@
+const cssnano = require('cssnano');
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
 const isDebug = process.env.NODE_ENV === 'development';
+const BASE_CSS_LOADER = 'css-loader?importLoaders=1&sourceMap';
+
+const POSTCSS = [
+  cssnano({
+    autoprefixer: {
+      add: true,
+      remove: false,
+      browsers: [
+        "last 2 versions",
+        "safari >= 7"
+      ]
+    },
+    discardComments: {
+      removeAll: true
+    },
+    discardUnused: false,
+    mergeIdents: false,
+    reduceIdents: false,
+    safe: true,
+    sourcemap: true
+  })
+];
 
 module.exports = {
   mode: isDebug ? 'development' : 'production',
   entry: {
     vendor: [
       "react",
-      "mobx",
-      "mobx-react",
       "react-dom",
       "react-router",
-      "whatwg-fetch"
+      'history',
+      "mobx",
+      "mobx-react",
+      "mobx-react-router"
     ],
     app: ["./src/index"]
   },
@@ -25,7 +50,16 @@ module.exports = {
     filename: "assets/[name].[hash].js",
     chunkFilename: "assets/[name].[chunkhash].js"
   },
+  
+  resolve : {
+    extensions: ['.js', '.jsx', '.json', '.web.js'],
+    alias: {
+    
+    }
+  },
+  
   devtool: 'source-map',
+  
   optimization: {
     runtimeChunk: {
       name: 'manifest'
@@ -34,7 +68,7 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true, // set to true if you want JS source maps,
+        sourceMap: true,
         uglifyOptions: {
           warnings: false
         }
@@ -70,20 +104,87 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        include: path.join(__dirname, "src"),
-        loader: "babel-loader",
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          compact: true,
+          cacheDirectory: true
+        }
       },
       {
-        test: /\.scss|css$/i,
+        test: /\.less$/,
+        exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader?sourceMap",
-          "resolve-url-loader",
-          "sass-loader?sourceMap"
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              sourceMap: true,
+              import: true,
+              modules: true,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true
+            }
+          }
         ]
       },
+      {
+        test: /\.less$/,
+        include: /node_modules/,
+        use: [
+          'style-loader',
+          BASE_CSS_LOADER,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        // exclude : null,
+        use: [
+          'style-loader',
+          BASE_CSS_LOADER,
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return POSTCSS;
+              },
+              sourceMap: true
+            }
+          }
+        ]
+      },
+    
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
@@ -136,7 +237,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       hash: false,
-      template: "./index.html"
+      template: "./src/index.html"
     })
   ]
 };
