@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import NotFound from 'components/NotFound';
-import routes from './routes';
+import routes from 'routes';
 
 import '../static/css/normalize.less';
 import '../static/css/common.less';
