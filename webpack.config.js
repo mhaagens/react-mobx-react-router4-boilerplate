@@ -8,7 +8,7 @@ const isDebug = process.env.NODE_ENV === 'development';
 module.exports = {
   mode: isDebug ? 'development' : 'production',
   entry: {
-    vendor: ['react', 'react-dom', 'react-router', 'history', 'mobx', 'mobx-react', 'mobx-react-router'],
+    vendor: ['react', 'react-dom', 'react-router', 'history', 'mobx', 'mobx-react', 'mobx-react-router', 'lodash'],
     app: [
       'react-hot-loader/patch',
       'webpack-dev-server/client?http://0.0.0.0:3000',

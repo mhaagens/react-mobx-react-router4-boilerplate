@@ -1,7 +1,8 @@
-import fetchAPI from 'api/fetchAPI';
 import { observable, action, computed } from 'mobx';
+import { isEmpty } from 'lodash';
+import { Posts } from '../service';
 
-export default class AppState {
+class HomeStore {
   @observable authenticated;
   @observable authenticating;
   @observable items;
@@ -15,18 +16,22 @@ export default class AppState {
     this.item = {};
   }
 
-  async fetchData(pathname) {
-    const { data } = await fetchAPI.get(`https://jsonplaceholder.typicode.com${pathname}`);
-    this.setData(data);
-  }
-
-  async fetchDataById(pathname, id) {
-    const { data } = await fetchAPI.get(`https://jsonplaceholder.typicode.com${pathname}/${id}`);
-    this.setData(data);
-  }
-
-  @action setData(data) {
-    this.items = data;
+  getPostList(params = {}) {
+    Posts.getPostList(params)
+      .then(
+        action('success', ({ status, data }) => {
+          if (status === 200) {
+            this.items = data;
+          } else {
+            Promise.reject(status);
+          }
+        })
+      )
+      .catch(
+        action('error', (error) => {
+          console.log(error);
+        })
+      );
   }
 
   @action setSingle(data) {
@@ -49,7 +54,17 @@ export default class AppState {
     });
   }
 
+  @computed get loading() {
+    return this.items.length > 0;
+  }
+
+  @computed get loadingItem() {
+    return !isEmpty(this.item);
+  }
+
   @computed get getItem() {
     return this.items.filter((todo) => todo.id === 1);
   }
 }
+
+export default HomeStore;
