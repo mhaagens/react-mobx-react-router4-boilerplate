@@ -32,6 +32,13 @@ module.exports = {
     port: 3000,
     host: '0.0.0.0',
     publicPath: '/',
+    proxy: {
+      '/api': {
+        target: 'http://jsonplaceholder.typicode.com',
+        pathRewrite: { '^/api': '' },
+        changeOrigin: true
+      }
+    },
     historyApiFallback: true,
     disableHostCheck: true
   },
@@ -188,6 +195,11 @@ module.exports = {
     hints: false
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

@@ -6,16 +6,16 @@ export default class WelcomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookList: null
+      bookList: []
     };
     this.handleFetchData();
   }
 
   async handleFetchData() {
-    const { status, data } = await fetchAPI.get('/book/list/');
+    const { status, data } = await fetchAPI.get('/api/posts/');
     if (status == 200) {
       this.setState({
-        bookList: data.data
+        bookList: data
       });
     }
   }
