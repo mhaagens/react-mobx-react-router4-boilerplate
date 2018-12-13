@@ -60,13 +60,15 @@ if (!isProduction) {
     };
 
     // hot reload
-    module.hot.accept('./coreLayout', () => {
-      try {
-        render(<App />, MOUNT_NODE);
-      } catch (e) {
-        render(<RedBox error={e} />, MOUNT_NODE);
-      }
-    });
+    if (module.hot) {
+      module.hot.accept('./coreLayout', () => {
+        try {
+          renderApp();
+        } catch (e) {
+          render(<RedBox error={e} />, MOUNT_NODE);
+        }
+      });
+    }
   }
 }
 

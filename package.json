@@ -7,7 +7,7 @@
     "lint": "eslint ./src --ext .jsx,.js",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier-eslint --write './src/**/*.{ts,js,css,json,jsx}'",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --mode development --config webpack.config.js",
     "build": "rimraf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
     "preview": "pushstate-server ./dist 3003",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -71,7 +71,7 @@
     "redbox-react": "^1.6.0",
     "rimraf": "^2.5.4",
     "style-loader": "^0.20.3",
-    "uglifyjs-webpack-plugin": "^1.2.4",
+    "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.20.2",
     "webpack-bundle-analyzer": "^3.0.3",
