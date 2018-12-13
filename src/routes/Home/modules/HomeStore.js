@@ -34,8 +34,22 @@ class HomeStore {
       );
   }
 
-  @action setSingle(data) {
-    this.item = data;
+  getPostItem(params = {}) {
+    Posts.getPostItem(params)
+      .then(
+        action('success', ({ status, data }) => {
+          if (status === 200) {
+            this.item = data;
+          } else {
+            Promise.reject(status);
+          }
+        })
+      )
+      .catch(
+        action('error', (error) => {
+          console.log(error);
+        })
+      );
   }
 
   @action clearItems() {
@@ -45,12 +59,14 @@ class HomeStore {
 
   @action authenticate() {
     return new Promise((resolve) => {
-      this.authenticating = true;
-      setTimeout(() => {
-        this.authenticated = !this.authenticated;
-        this.authenticating = false;
-        resolve(this.authenticated);
-      }, 0);
+      setTimeout(
+        action('success', () => {
+          this.authenticated = !this.authenticated;
+          this.authenticating = false;
+          resolve(this.authenticated);
+        }),
+        200
+      );
     });
   }
 

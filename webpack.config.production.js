@@ -9,6 +9,8 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const webpackConfig = require('./webpack.config');
 
 const mergeConfig = merge(webpackConfig, {
+  mode: 'production',
+
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',

@@ -69,7 +69,6 @@
     "prettier-eslint-cli": "^4.7.1",
     "react-hot-loader": "next",
     "redbox-react": "^1.6.0",
-    "resolve-url-loader": "^2.3.0",
     "rimraf": "^2.5.4",
     "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.4",

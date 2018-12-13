@@ -6,7 +6,7 @@ const POSTCSS = require('./postcss.config');
 const isDebug = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  mode: isDebug ? 'development' : 'production',
+  mode: 'development',
   entry: {
     vendor: ['react', 'react-dom', 'react-router', 'history', 'mobx', 'mobx-react', 'mobx-react-router', 'lodash'],
     app: [
@@ -161,11 +161,11 @@ module.exports = {
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'url-loader?limit=10000&mimetype=application/font-woff'
+        use: 'url-loader??prefix=fonts/name=assets/[name].[hash:8].[ext]&limit=10000&mimetype=application/font-woff'
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'file-loader'
+        use: 'file-loader?prefix=fonts/&name=assets/[name].[hash:8].[ext]&limit=10000&mimetype=font/opentype'
       }
     ]
   },

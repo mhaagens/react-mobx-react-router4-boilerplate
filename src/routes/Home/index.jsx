@@ -1,3 +1,4 @@
+import LazyLoader from 'components/LazyLoader';
 import HomePage from './container';
 
 export default [
@@ -7,8 +8,13 @@ export default [
     component: HomePage
   },
   {
-    path: '/article/:id?',
+    path: '/posts/',
     exact: true,
-    component: HomePage
+    component: LazyLoader(() => import('./container/Posts'))
+  },
+  {
+    path: '/posts/:id?',
+    exact: true,
+    component: LazyLoader(() => import('./container/Article'))
   }
 ];

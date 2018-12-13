@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 import TopBar from 'components/TopBar';
 import FootBar from 'components/FootBar';
-import WelcomePage from '../components/WelcomePage';
+import PostsPage from '../components/PostsPage';
 
 @inject('routerStore')
 @inject('homeStore')
@@ -14,11 +14,24 @@ class HomeContainer extends Component {
     this.homeStore = props.homeStore;
   }
 
+  componentDidMount() {
+    this.homeStore.getPostList();
+  }
+
+  componentWillUnmount() {
+    this.homeStore.clearItems();
+  }
+
   render() {
+    const {
+      match: { url }
+    } = this.props;
+
+    const { items } = this.homeStore;
     return (
       <React.Fragment>
         <TopBar />
-        <WelcomePage />
+        <PostsPage items={items} url={url} />
         <FootBar />
       </React.Fragment>
     );
@@ -26,7 +39,8 @@ class HomeContainer extends Component {
 }
 
 HomeContainer.propTypes = {
-  homeStore: propTypes.object
+  homeStore: propTypes.object,
+  match: propTypes.object
 };
 
 export default HomeContainer;
