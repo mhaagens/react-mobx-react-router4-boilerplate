@@ -32,6 +32,10 @@ module.exports = {
     port: 3000,
     host: '0.0.0.0',
     publicPath: '/',
+    stats: {
+      color: true
+    },
+    clientLogLevel: 'none',
     proxy: {
       '/api': {
         target: 'http://jsonplaceholder.typicode.com',

@@ -20,7 +20,7 @@ export default class WelcomePage extends Component {
           </div>
           <div className={style['github-buttons']}>
             <a
-              href='https://github.com/mhaagens/react-mobx-react-router4-boilerplate'
+              href='https://github.com/taikongfeizhu/react-mobx-react-router4-boilerplate'
               rel='noopener noreferrer'
               target='_blank'
             >
@@ -37,7 +37,7 @@ export default class WelcomePage extends Component {
             <div className={`${style['boilerplate-logo']} ${style['react']}`} />
             <div className={style['boilerplate-item-content']}>
               <a href='https://facebook.github.io/react/' rel='noopener noreferrer' target='_blank'>
-                <h4>React</h4>
+                <h4>React 16</h4>
               </a>
               <small>UI Library</small>
               <p>
@@ -50,7 +50,7 @@ export default class WelcomePage extends Component {
             <div className={`${style['boilerplate-logo']} ${style['mobx']}`} />
             <div className={style['boilerplate-item-content']}>
               <a href='http://mobxjs.github.io/mobx/' rel='noopener noreferrer' target='_blank'>
-                <h4>MobX</h4>
+                <h4>MobX 5</h4>
               </a>
               <small>Reactive State Management</small>
               <p>MobX is a battle tested library that makes state management simple and scalable.</p>
@@ -72,8 +72,8 @@ export default class WelcomePage extends Component {
           <div className={style['boilerplate-item']}>
             <div className={`${style['boilerplate-logo']} ${style['webpack']}`} />
             <div className={style['boilerplate-item-content']}>
-              <a href='http://webpack.github.io/' rel='noopener noreferrer' target='_blank'>
-                <h4>Webpack 2</h4>
+              <a href='https://webpack.js.org' rel='noopener noreferrer' target='_blank'>
+                <h4>Webpack 4</h4>
               </a>
               <small>Module Bundler</small>
               <p>Webpack takes modules with dependencies and generates static assets representing those modules.</p>
@@ -83,9 +83,14 @@ export default class WelcomePage extends Component {
             <h4>Extras</h4>
             <hr />
             <ul>
-              <li>✓ Async Component Loading</li>
-              <li>✓ Code-splitting</li>
-              <li>✓ Extracted and autoprefixed CSS</li>
+              <li>✓ React-hot-loader</li>
+              <li>✓ Mobx-react-router</li>
+              <li>✓ CSS Modules</li>
+            </ul>
+            <ul>
+              <li>✓ Prettier & ESlint</li>
+              <li>✓ Babel-preset-env</li>
+              <li>✓ Code Splitting</li>
             </ul>
           </div>
         </main>

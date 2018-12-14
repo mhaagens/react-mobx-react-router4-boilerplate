@@ -8,7 +8,7 @@
 
 ```javascript
 "engines": {
-    "node": ">=6.11.5" // >=8.9.4 (recommendation version) 
+    "node": ">=6.11.5" // >=8.10.0 (recommendation version) 
   }
 ```
 
@@ -142,7 +142,21 @@ module.exports = {
         parallel: true,
         sourceMap: true 
       }),
-      new OptimizeCSSAssetsPlugin({})  // use OptimizeCSSAssetsPlugin
+      new OptimizeCSSAssetsPlugin({
+      	assetNameRegExp: /\.css$/g,
+          cssProcessor: require('cssnano'),
+          cssProcessorOptions: {
+            autoprefixer: false,
+            preset: [
+              'default',
+              {
+                discardComments: {
+                  removeAll: true
+                }
+              }
+            ]
+        }
+      })  // use OptimizeCSSAssetsPlugin
     ]
   },
   plugins: [
@@ -151,7 +165,6 @@ module.exports = {
       chunkFilename: 'css/app.[contenthash:12].css'  // use contenthash *
     })
   ]
-  ....
 }
 
 ```
