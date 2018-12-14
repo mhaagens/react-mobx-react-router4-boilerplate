@@ -1,5 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import { isEmpty } from 'lodash';
+import { PostModel } from '../models';
 import { Posts } from '../service';
 
 class HomeStore {
@@ -21,7 +22,7 @@ class HomeStore {
       .then(
         action('success', ({ status, data }) => {
           if (status === 200) {
-            this.items = data;
+            this.items = data.map((item) => PostModel.fromJS(item));
           } else {
             Promise.reject(status);
           }
@@ -39,7 +40,7 @@ class HomeStore {
       .then(
         action('success', ({ status, data }) => {
           if (status === 200) {
-            this.item = data;
+            this.item = PostModel.fromJS(data);
           } else {
             Promise.reject(status);
           }
