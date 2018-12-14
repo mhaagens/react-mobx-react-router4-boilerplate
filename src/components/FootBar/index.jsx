@@ -9,11 +9,11 @@ class FootBar extends Component {
   render() {
     return (
       <footer>
-        <a href='https://twitter.com/mhaagens' target='_blank' rel='noopener noreferrer'>
+        <a href='https://segmentfault.com/u/abcat' target='_blank' rel='noopener noreferrer'>
           @Abcat
         </a>{' '}
         | github:{' '}
-        <a href='https://github.com/mhaagens' target='_blank' rel='noopener noreferrer'>
+        <a href='https://github.com/taikongfeizhu' target='_blank' rel='noopener noreferrer'>
           taikongfeizhu
         </a>
       </footer>

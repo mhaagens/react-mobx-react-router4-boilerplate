@@ -14,14 +14,14 @@ class PostsPage extends Component {
   }
 
   render() {
-    const { items, url } = this.props;
+    const { items, url, loading } = this.props;
     return (
       <div className={style.posts}>
         <h1 onClick={this.getItem}>Posts</h1>
         <p className='subheader'>Posts are fetched from jsonplaceholder.typicode.com</p>
         <hr />
         <ul>
-          {items && items.length
+          {items && loading
             ? items.slice(6, 12).map((post) => {
                 return (
                   <li key={post.id}>
@@ -41,7 +41,8 @@ class PostsPage extends Component {
 
 PostsPage.propTypes = {
   match: propTypes.object,
-  items: propTypes.object.isRequired,
+  loading: propTypes.bool,
+  items: propTypes.array.isRequired,
   url: propTypes.string.isRequired
 };
 

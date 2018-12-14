@@ -29,11 +29,11 @@ class HomeContainer extends Component {
   }
 
   render() {
-    const { item } = this.homeStore;
+    const { item, loadingItem } = this.homeStore;
     return (
       <React.Fragment>
         <TopBar />
-        <ArticlePage item={item} />
+        <ArticlePage item={item} loading={loadingItem} />
         <FootBar />
       </React.Fragment>
     );

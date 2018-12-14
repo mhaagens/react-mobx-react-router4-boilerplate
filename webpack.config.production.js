@@ -87,11 +87,10 @@ const mergeConfig = merge(webpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('production'),
+        __DEV__: process.env.NODE_ENV === 'production'
       }
     }),
-
-    new webpack.NamedModulesPlugin(),
 
     new MiniCssExtractPlugin({
       filename: 'css/app.[name].css',

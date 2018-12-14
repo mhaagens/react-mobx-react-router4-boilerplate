@@ -7,7 +7,6 @@ import { Router } from 'react-router-dom';
 import { AppContainer } from 'react-hot-loader';
 import store from './store';
 import App from './coreLayout';
-import { isProduction } from './constants/env';
 
 // ========================================================
 // Store Instantiation
@@ -41,7 +40,7 @@ let render = () => {
 };
 
 // This code is excluded from production bundle
-if (!isProduction) {
+if (__DEV__) {
   if (module.hot) {
     // Development render functions
     const renderApp = render;

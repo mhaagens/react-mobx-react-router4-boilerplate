@@ -14,14 +14,18 @@ class PostsPage extends Component {
   }
 
   render() {
-    const { item } = this.props;
+    const { item, loading } = this.props;
     return (
       <div className={style.post}>
         <Link to='/posts'>← Back to Posts</Link>
-        {!!item && (
+        {loading ? (
           <article>
             <h1>{item.title}</h1>
             <p>{item.body}</p>
+          </article>
+        ) : (
+          <article>
+            <span>Loading...</span>
           </article>
         )}
       </div>
@@ -30,7 +34,8 @@ class PostsPage extends Component {
 }
 
 PostsPage.propTypes = {
-  item: propTypes.object.isRequired
+  item: propTypes.object.isRequired,
+  loading: propTypes.bool.isRequired
 };
 
 export default PostsPage;

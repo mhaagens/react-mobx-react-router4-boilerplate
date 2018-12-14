@@ -27,11 +27,11 @@ class HomeContainer extends Component {
       match: { url }
     } = this.props;
 
-    const { items } = this.homeStore;
+    const { items, loading } = this.homeStore;
     return (
       <React.Fragment>
         <TopBar />
-        <PostsPage items={items} url={url} />
+        <PostsPage items={items} url={url} loading={loading} />
         <FootBar />
       </React.Fragment>
     );
