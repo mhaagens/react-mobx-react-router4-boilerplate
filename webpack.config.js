@@ -21,6 +21,7 @@ module.exports = {
     alias: {
       api: path.resolve(__dirname, 'src/api'),
       utils: path.resolve(__dirname, 'src/utils'),
+      static: path.resolve(__dirname, 'src/static'),
       routes: path.resolve(__dirname, 'src/routes'),
       components: path.resolve(__dirname, 'src/components'),
       constants: path.resolve(__dirname, 'src/constants')
