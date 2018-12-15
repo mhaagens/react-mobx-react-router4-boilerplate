@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint ./src --ext .jsx,.js",
     "lint:fix": "npm run lint -- --fix",
-    "format": "prettier-eslint --write './src/**/*.{ts,js,css,json,jsx}'",
+    "format": "prettier-eslint --write './src/**/*.{ts,js,json,jsx}'",
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config webpack.config.js",
     "build": "rimraf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
     "preview": "pushstate-server ./dist 3003",
