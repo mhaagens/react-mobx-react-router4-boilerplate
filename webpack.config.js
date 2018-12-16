@@ -10,12 +10,14 @@ const baseConfig = {
   mode: 'development',
   entry: {
     vendor: ['classnames', 'immer'],
-    app: [
-      'react-hot-loader/patch',
-      'webpack-dev-server/client?http://0.0.0.0:3000',
-      'webpack/hot/only-dev-server',
-      './src/index'
-    ]
+    app: isDebug
+      ? [
+          'react-hot-loader/patch',
+          'webpack-dev-server/client?http://0.0.0.0:3000',
+          'webpack/hot/only-dev-server',
+          './src/index'
+        ]
+      : ['./src/index']
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.web.js'],
