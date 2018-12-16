@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config webpack.config.js",
     "build": "rimraf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
     "preview": "pushstate-server ./dist 3003",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dll": "NODE_ENV=production webpack --config webpack.dll.lib.js --progress",
+    "dll:dev": "NODE_ENV=development webpack --config webpack.dll.lib.js --progress"
   },
   "keywords": [
     "React",
@@ -34,6 +35,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.2",
     "@babel/runtime-corejs2": "^7.1.2",
+    "add-asset-html-webpack-plugin": "^3.1.2",
     "autoprefixer": "^9.4.2",
     "babel-eslint": "^9.0.0",
     "babel-loader": "^8.0.4",
@@ -67,6 +69,7 @@
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1",
+    "pushstate-server": "^3.0.1",
     "react-hot-loader": "^4.6.0",
     "redbox-react": "^1.6.0",
     "rimraf": "^2.5.4",
@@ -81,11 +84,13 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "classnames": "^2.2.6",
     "css-declaration-sorter": "^2.0.0",
     "css-mqpacker": "^6.0.1",
     "faker": "^4.1.0",
     "history": "^4.7.2",
     "husky": "^1.2.0",
+    "immer": "^1.9.0",
     "lazy-route": "^1.0.7",
     "lodash": "^4.17.11",
     "mobx": "^5.7.0",
@@ -95,7 +100,6 @@
     "package": "^1.0.1",
     "postcss-preset-env": "^4.1.0",
     "prop-types": "^15.5.10",
-    "pushstate-server": "^3.0.1",
     "querystring": "^0.2.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

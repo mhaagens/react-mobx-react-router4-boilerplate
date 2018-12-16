@@ -1,14 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const POSTCSS = require('./postcss.config');
 
 const isDebug = process.env.NODE_ENV === 'development';
 
-module.exports = {
+const baseConfig = {
   mode: 'development',
   entry: {
-    vendor: ['react', 'react-dom', 'react-router', 'history', 'mobx', 'mobx-react', 'mobx-react-router', 'lodash'],
+    vendor: ['classnames', 'immer'],
     app: [
       'react-hot-loader/patch',
       'webpack-dev-server/client?http://0.0.0.0:3000',
@@ -29,7 +30,7 @@ module.exports = {
   },
   devServer: {
     hot: true,
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: [path.resolve(__dirname, 'dist'), path.resolve(__dirname, 'public')],
     port: 3000,
     host: '0.0.0.0',
     publicPath: '/',
@@ -199,6 +200,7 @@ module.exports = {
   performance: {
     hints: false
   },
+
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -206,12 +208,32 @@ module.exports = {
       },
       __DEV__: process.env.NODE_ENV === 'development'
     }),
+
     new webpack.NamedModulesPlugin(),
+
     new webpack.HotModuleReplacementPlugin(),
+
     new HtmlWebpackPlugin({
       hash: false,
       template: './src/index.html'
     }),
+
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./public/lib/debug/manifest.json')
+    }),
+
+    new AddAssetHtmlPlugin([
+      {
+        filepath: path.resolve(__dirname, './public/lib/debug/lib.js'),
+        outputPath: 'lib/debug',
+        publicPath: '/lib/debug',
+        includeSourcemap: true
+      }
+    ]),
+
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/)
   ]
 };
+
+module.exports = baseConfig;

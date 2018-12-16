@@ -3,9 +3,11 @@ const webpack = require('webpack');
 const cssnano = require('cssnano');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundlePlugin = require('webpack-bundle-analyzer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const webpackConfig = require('./webpack.config');
 
 const mergeConfig = merge(webpackConfig, {
@@ -92,6 +94,8 @@ const mergeConfig = merge(webpackConfig, {
       }
     }),
 
+    new webpack.NamedModulesPlugin(),
+
     new MiniCssExtractPlugin({
       filename: 'css/app.[name].css',
       chunkFilename: 'css/app.[contenthash:12].css'
@@ -100,7 +104,25 @@ const mergeConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       hash: false,
       template: './src/index.html'
-    })
+    }),
+
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./public/lib/min/manifest.json')
+    }),
+
+    new AddAssetHtmlPlugin([
+      {
+        filepath: path.resolve(__dirname, './public/lib/min/lib.8b5fc937f.js'),
+        outputPath: 'lib/min',
+        publicPath: '/lib/min',
+        includeSourcemap: false
+      }
+    ]),
+
+    new BundlePlugin.BundleAnalyzerPlugin(),
+
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/)
   ]
 });
 

@@ -86,11 +86,13 @@ export default class WelcomePage extends Component {
               <li>✓ React-hot-loader</li>
               <li>✓ Mobx-react-router</li>
               <li>✓ CSS Modules</li>
+              <li>✓ Pushstate Server Preview</li>
             </ul>
             <ul>
               <li>✓ Prettier & ESlint</li>
               <li>✓ Babel-preset-env</li>
               <li>✓ Code Splitting</li>
+              <li>✓ Webpack Dll Plugin</li>
             </ul>
           </div>
         </main>
