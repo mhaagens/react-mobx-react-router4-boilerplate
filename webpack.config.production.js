@@ -12,13 +12,14 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin');
 const webpackConfig = require('./webpack.config');
 
 const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
+const publicPath = '/dist/';
 
 const mergeConfig = merge(webpackConfig, {
   mode: 'production',
 
   output: {
-    path: path.join(__dirname, 'dist'),
-    publicPath: '/',
+    path: path.join(__dirname, 'output'),
+    publicPath: publicPath,
     filename: 'js/[name].[hash:12].js',
     chunkFilename: 'js/[id].[chunkhash:12].js'
   },
@@ -106,7 +107,8 @@ const mergeConfig = merge(webpackConfig, {
 
     new HtmlWebpackPlugin({
       hash: false,
-      template: './src/index.html'
+      template: './src/index.html',
+      filename: 'index.html'
     }),
 
     new webpack.DllReferencePlugin({
@@ -118,7 +120,7 @@ const mergeConfig = merge(webpackConfig, {
       {
         filepath: path.resolve(__dirname, './public/lib/min/lib.8b5fc937f.js'),
         outputPath: 'lib/min',
-        publicPath: '/lib/min',
+        publicPath: `${publicPath}lib/min`,
         includeSourcemap: false
       }
     ]),
@@ -129,10 +131,10 @@ const mergeConfig = merge(webpackConfig, {
 
     new PrerenderSPAPlugin({
       // Index.html is in the root directory.
-      staticDir: path.join(__dirname, 'dist'),
-      outputDir: path.join(__dirname, 'dist'),
-      indexPath: path.join(__dirname, 'dist', 'index.html'),
-      routes: ['/', '/posts'],
+      staticDir: path.join(__dirname, 'output'),
+      outputDir: path.join(__dirname, 'output'),
+      indexPath: path.join(__dirname, 'output', 'index.html'),
+      routes: ['/'],
       // Optional minification.
       minify: {
         collapseBooleanAttributes: true,
@@ -144,7 +146,20 @@ const mergeConfig = merge(webpackConfig, {
 
       server: {
         // Normally a free port is autodetected, but feel free to set this if needed.
-        port: 8000
+        port: 8001,
+        proxy: {
+          '/dist/': {
+            target: 'http://127.0.0.1:8001',
+            pathRewrite: { '^/dist': '/' }
+          }
+        }
+      },
+
+      postProcess(context) {
+        // Remove /index.html from the output path if the dir name ends with a .html file extension.
+        // For example: /dist/dir/special.html/index.html -> /dist/dir/special.html
+        // context.html = context.html.replace(/\/dist/gi, '');
+        return context;
       },
 
       renderer: new Renderer({

@@ -32,7 +32,7 @@ const baseConfig = {
   },
   devServer: {
     hot: true,
-    contentBase: [path.resolve(__dirname, 'dist'), path.resolve(__dirname, 'public')],
+    contentBase: [path.resolve(__dirname, 'output'), path.resolve(__dirname, 'public')],
     port: 3000,
     host: '0.0.0.0',
     publicPath: '/',
@@ -51,7 +51,7 @@ const baseConfig = {
     disableHostCheck: true
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'output'),
     publicPath: '/',
     filename: 'js/[name].js',
     chunkFilename: 'js/[id].js'

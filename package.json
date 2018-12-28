@@ -8,8 +8,8 @@
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier-eslint --write './src/**/*.{ts,js,json,jsx}'",
     "start": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config webpack.config.js",
-    "build": "rimraf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
-    "preview": "pushstate-server ./dist 3003",
+    "build": "rimraf ./output && cross-env NODE_ENV=production webpack --config webpack.config.production.js",
+    "preview": "pushstate-server ./output 3003",
     "dll": "NODE_ENV=production webpack --config webpack.dll.lib.js --progress",
     "dll:dev": "NODE_ENV=development webpack --config webpack.dll.lib.js --progress"
   },
