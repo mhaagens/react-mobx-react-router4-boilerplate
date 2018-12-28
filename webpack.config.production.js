@@ -3,12 +3,15 @@ const webpack = require('webpack');
 const cssnano = require('cssnano');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundlePlugin = require('webpack-bundle-analyzer');
+// const BundlePlugin = require('webpack-bundle-analyzer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const PrerenderSPAPlugin = require('prerender-spa-plugin');
 const webpackConfig = require('./webpack.config');
+
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
 
 const mergeConfig = merge(webpackConfig, {
   mode: 'production',
@@ -120,9 +123,34 @@ const mergeConfig = merge(webpackConfig, {
       }
     ]),
 
-    new BundlePlugin.BundleAnalyzerPlugin(),
+    // new BundlePlugin.BundleAnalyzerPlugin(),
 
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/)
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/),
+
+    new PrerenderSPAPlugin({
+      // Index.html is in the root directory.
+      staticDir: path.join(__dirname, 'dist'),
+      outputDir: path.join(__dirname, 'dist'),
+      indexPath: path.join(__dirname, 'dist', 'index.html'),
+      routes: ['/', '/posts'],
+      // Optional minification.
+      minify: {
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true,
+        decodeEntities: true,
+        keepClosingSlash: true,
+        sortAttributes: true
+      },
+
+      server: {
+        // Normally a free port is autodetected, but feel free to set this if needed.
+        port: 8000
+      },
+
+      renderer: new Renderer({
+        renderAfterTime: 2000
+      })
+    })
   ]
 });
 
