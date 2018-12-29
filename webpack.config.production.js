@@ -12,7 +12,7 @@ const PrerenderSPAPlugin = require('prerender-spa-plugin');
 const webpackConfig = require('./webpack.config');
 
 const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
-const publicPath = '/dist/';
+const publicPath = '/';
 
 const mergeConfig = merge(webpackConfig, {
   mode: 'production',
