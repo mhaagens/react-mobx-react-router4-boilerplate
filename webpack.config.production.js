@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const cssnano = require('cssnano');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const BundlePlugin = require('webpack-bundle-analyzer');
+const BundlePlugin = require('webpack-bundle-analyzer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -125,9 +125,9 @@ const mergeConfig = merge(webpackConfig, {
       }
     ]),
 
-    // new BundlePlugin.BundleAnalyzerPlugin(),
-
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/),
+
+    new BundlePlugin.BundleAnalyzerPlugin(),
 
     new PrerenderSPAPlugin({
       // Index.html is in the root directory.
