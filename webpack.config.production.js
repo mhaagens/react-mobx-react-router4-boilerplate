@@ -118,7 +118,7 @@ const mergeConfig = merge(webpackConfig, {
 
     new AddAssetHtmlPlugin([
       {
-        filepath: path.resolve(__dirname, './public/lib/min/lib.8b5fc937f.js'),
+        filepath: path.resolve(__dirname, './public/lib/min/lib.aef84325a.js'),
         outputPath: 'lib/min',
         publicPath: `${publicPath}lib/min`,
         includeSourcemap: false
