@@ -1,0 +1,48 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true,
+        "modules": false,
+        "useBuiltIns": "usage",
+        "targets": {
+          "browsers": [
+            "> 1%",
+            "last 2 versions",
+            "Android >= 4"
+          ]
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
+    "@babel/plugin-syntax-jsx",
+    "@babel/plugin-syntax-dynamic-import",
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 2,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ],
+    [
+      "lodash"
+    ]
+  ]
+}

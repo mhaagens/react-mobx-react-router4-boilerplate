@@ -1,105 +1,189 @@
-var path = require("path");
-var webpack = require("webpack");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const cssnano = require('cssnano');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundlePlugin = require('webpack-bundle-analyzer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const PrerenderSPAPlugin = require('prerender-spa-plugin');
+const webpackConfig = require('./webpack.config');
 
-module.exports = {
-    entry: {
-        vendor: ["react", "react-dom", "react-router"],
-        app: ["babel-polyfill", "./src/index"]
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;
+const publicPath = '/';
+
+const mergeConfig = merge(webpackConfig, {
+  mode: 'production',
+
+  output: {
+    path: path.join(__dirname, 'output'),
+    publicPath: publicPath,
+    filename: 'js/[name].[hash:12].js',
+    chunkFilename: 'js/[id].[chunkhash:12].js'
+  },
+
+  devtool: '#source-map',
+
+  module: {},
+
+  optimization: {
+    runtimeChunk: {
+      name: 'manifest'
     },
-    output: {
-        path: path.join(__dirname, "dist"),
-        publicPath: "/",
-        filename: "assets/[name].[hash].js",
-        chunkFilename: "assets/[name].[chunkhash].js"
-    },
-    devtool: "cheap-module-source-map",
-    module: {
-        rules: [
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          warnings: false,
+          mangle: {
+            toplevel: true
+          }
+        }
+      }),
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: cssnano,
+        cssProcessorOptions: {
+          autoprefixer: false,
+          preset: [
+            'default',
             {
-                test: /\.js$/,
-                include: path.join(__dirname, "src"),
-                loader: "babel-loader",
-                query: {
-                    presets: [
-                        ["es2015", { modules: false }],
-                        "stage-0",
-                        "react"
-                    ],
-                    plugins: [
-                        "transform-async-to-generator",
-                        "transform-decorators-legacy"
-                    ]
-                }
-            },
-            {
-                test: /\.scss|css$/i,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: [
-                        "css-loader",
-                        "postcss-loader",
-                        "resolve-url-loader",
-                        "sass-loader?sourceMap"
-                    ]
-                })
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                use: [
-                    "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
-                    {
-                        loader: "image-webpack-loader",
-                        options: {
-                            progressive: true,
-                            optimizationLevel: 7,
-                            interlaced: false,
-                            pngquant: {
-                                quality: "65-90",
-                                speed: 4
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                use: "url-loader?limit=10000&mimetype=application/font-woff"
-            },
-            {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                use: "file-loader"
+              discardComments: {
+                removeAll: true
+              }
             }
-        ]
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                NODE_ENV: JSON.stringify("production")
-            }
-        }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(true),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "vendor",
-            minChunks: Infinity
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            compress: {
-                warnings: false,
-                drop_console: true,
-                screw_ie8: true
-            },
-            output: {
-                comments: false
-            }
-        }),
-        new ExtractTextPlugin("assets/styles.css"),
-        new HtmlWebpackPlugin({
-            hash: false,
-            template: "./index.hbs"
-        })
-    ]
-};
+          ]
+        }
+      })
+    ],
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      name: false,
+      cacheGroups: {
+        vendor: {
+          name: 'vendor',
+          chunks: 'initial',
+          priority: -10,
+          reuseExistingChunk: false,
+          test: /node_modules\/(.*)\.js/
+        },
+        styles: {
+          name: 'styles',
+          test: /\.(less|css)$/,
+          chunks: 'all',
+          minChunks: 1,
+          reuseExistingChunk: true,
+          enforce: true
+        }
+      }
+    }
+  },
+
+  performance: {
+    hints: false
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+        __DEV__: process.env.NODE_ENV === 'production'
+      }
+    }),
+
+    new webpack.NamedModulesPlugin(),
+
+    new MiniCssExtractPlugin({
+      filename: 'css/app.[name].css',
+      chunkFilename: 'css/app.[contenthash:12].css'
+    }),
+
+    new HtmlWebpackPlugin({
+      hash: false,
+      template: './src/index.html',
+      filename: 'index.html'
+    }),
+
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./public/lib/min/manifest.json')
+    }),
+
+    new AddAssetHtmlPlugin([
+      {
+        filepath: path.resolve(__dirname, './public/lib/min/lib.aef84325a.js'),
+        outputPath: 'lib/min',
+        publicPath: `${publicPath}lib/min`,
+        includeSourcemap: false
+      }
+    ]),
+
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /nb/),
+
+    new BundlePlugin.BundleAnalyzerPlugin(),
+
+    new PrerenderSPAPlugin({
+      // Index.html is in the root directory.
+      staticDir: path.join(__dirname, 'output'),
+      outputDir: path.join(__dirname, 'output'),
+      indexPath: path.join(__dirname, 'output', 'index.html'),
+      routes: ['/'],
+      // Optional minification.
+      minify: {
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true,
+        decodeEntities: true,
+        keepClosingSlash: true,
+        sortAttributes: true
+      },
+
+      server: {
+        // Normally a free port is autodetected, but feel free to set this if needed.
+        port: 8001,
+        proxy: {
+          '/dist/': {
+            target: 'http://127.0.0.1:8001',
+            pathRewrite: { '^/dist': '/' }
+          }
+        }
+      },
+
+      postProcess(context) {
+        // Remove /index.html from the output path if the dir name ends with a .html file extension.
+        // For example: /dist/dir/special.html/index.html -> /dist/dir/special.html
+        // context.html = context.html.replace(/\/dist/gi, '');
+        return context;
+      },
+
+      renderer: new Renderer({
+        renderAfterTime: 2000
+      })
+    })
+  ]
+});
+
+mergeConfig.module.rules
+  .filter((rule) => {
+    const bool =
+      rule.use &&
+      Array.isArray(rule.use) &&
+      rule.use.find((name) => {
+        if (Object.prototype.toString.call(name) === '[object Object]') {
+          name = name.loader;
+        }
+        return /css-loader/.test(name.split('?')[0]);
+      });
+    return bool;
+  })
+  .forEach((rule) => {
+    rule.use[0] = MiniCssExtractPlugin.loader;
+  });
+
+module.exports = mergeConfig;
